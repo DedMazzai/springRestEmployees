@@ -36,7 +36,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public void saveEmployee(Employee employee) {
         Session session = sessionFactory.getCurrentSession();
-        session.merge(employee);
+        if (employee.getId() == 0) {
+            // Сохраняем новый объект сущности
+            session.persist(employee);
+        } else {
+            // Обновляем существующий объект сущности
+            session.merge(employee);
+        }
     }
 
     @Override
