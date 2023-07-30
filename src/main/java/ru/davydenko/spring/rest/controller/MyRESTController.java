@@ -35,21 +35,4 @@ public class MyRESTController {
         }
         return employee;
     }
-
-    // ResponseEntity - обертка Http response
-    //NoSuchEmployeeException - exception, на который должен реагировать данный метод
-    //HttpStatus.NOT_FOUND - статус код для Http response
-    @ExceptionHandler
-    public ResponseEntity<EmployeeIncorrectData> handlerException(NoSuchEmployeeException exception) {
-        EmployeeIncorrectData data = new EmployeeIncorrectData();
-        data.setInfo(exception.getMessage());
-        return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<EmployeeIncorrectData> handlerException(Exception exception) {
-        EmployeeIncorrectData data = new EmployeeIncorrectData();
-        data.setInfo(exception.getMessage());
-        return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
-    }
 }
