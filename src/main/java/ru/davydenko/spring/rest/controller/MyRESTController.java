@@ -1,11 +1,8 @@
 package ru.davydenko.spring.rest.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.davydenko.spring.rest.entity.Employee;
-import ru.davydenko.spring.rest.exeption_handling.EmployeeIncorrectData;
 import ru.davydenko.spring.rest.exeption_handling.NoSuchEmployeeException;
 import ru.davydenko.spring.rest.service.EmployeeService;
 
