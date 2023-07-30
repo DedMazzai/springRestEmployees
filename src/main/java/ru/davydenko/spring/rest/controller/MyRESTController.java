@@ -1,11 +1,12 @@
 package ru.davydenko.spring.rest.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import ru.davydenko.spring.rest.entity.Employee;
+import ru.davydenko.spring.rest.exeption_handling.EmployeeIncorrectData;
+import ru.davydenko.spring.rest.exeption_handling.NoSuchEmployeeException;
 import ru.davydenko.spring.rest.service.EmployeeService;
 
 import java.util.List;
@@ -28,6 +29,27 @@ public class MyRESTController {
 
     @GetMapping("/employees/{id}")
     public Employee getEmployee(@PathVariable int id) {
-        return employeeService.getEmployee(id);
+        Employee employee = employeeService.getEmployee(id);
+        if (employee == null) {
+            throw new NoSuchEmployeeException("There is no employee with ID = " + id + " in Database");
+        }
+        return employee;
+    }
+
+    // ResponseEntity - обертка Http response
+    //NoSuchEmployeeException - exception, на который должен реагировать данный метод
+    //HttpStatus.NOT_FOUND - статус код для Http response
+    @ExceptionHandler
+    public ResponseEntity<EmployeeIncorrectData> handlerException(NoSuchEmployeeException exception) {
+        EmployeeIncorrectData data = new EmployeeIncorrectData();
+        data.setInfo(exception.getMessage());
+        return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<EmployeeIncorrectData> handlerException(Exception exception) {
+        EmployeeIncorrectData data = new EmployeeIncorrectData();
+        data.setInfo(exception.getMessage());
+        return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
     }
 }
