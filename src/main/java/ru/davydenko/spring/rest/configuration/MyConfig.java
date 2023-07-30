@@ -22,11 +22,11 @@ import java.util.Properties;
 @EnableTransactionManagement //Spring будет автоматически управлять транзакциями для всех методов, помеченных аннотацией @Transactional
 public class MyConfig {
 
-    @Value("${db.user}")
+    @Value("${db.userName}")
     private String dbUser;
 
-    @Value("${db.admin}")
-    private String dbAdmin;
+    @Value("${db.password}")
+    private String dbPassword;
 
     //Создание подключения к БД
     @Bean
@@ -35,8 +35,8 @@ public class MyConfig {
         try {
             dataSource.setDriverClass("org.postgresql.Driver");
             dataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/my_db");
-            dataSource.setUser("admin");
-            dataSource.setPassword("admin");
+            dataSource.setUser(dbUser);
+            dataSource.setPassword(dbPassword);
         } catch (PropertyVetoException e) {
             e.printStackTrace();
         }
